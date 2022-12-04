@@ -1,8 +1,15 @@
 local is_available = astronvim.is_available
 local user_plugin_opts = astronvim.user_plugin_opts
+local namespace = vim.api.nvim_create_namespace
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local create_command = vim.api.nvim_create_user_command
+
+vim.on_key(function(char)
+  if vim.fn.mode() == "n" then
+    vim.opt.hlsearch = vim.tbl_contains({ "<CR>", "n", "N", "*", "#", "?", "/" }, vim.fn.keytrans(char))
+  end
+end, namespace "auto_hlsearch")
 
 cmd({ "VimEnter", "FileType", "BufEnter", "WinEnter" }, {
   desc = "URL Highlighting",
